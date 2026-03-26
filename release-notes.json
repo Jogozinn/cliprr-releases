@@ -1,0 +1,18 @@
+{
+  "versions": {
+    "1.0.0": {
+      "title": "Cliprr 1.0.0",
+      "notes": [
+        "First full packaged Cliprr release.",
+        "Includes the live Twitch monitor workflow for short-form clipping.",
+        "Adds the dashboard, learning, longform, and settings surfaces into the packaged app.",
+        "Supports Twitch user auth, Twitch chat auth, and multi-account Google upload configuration.",
+        "Fixes packaged runtime path resolution for VOD analysis and processed data output.",
+        "Improves Twitch token refresh handling for longer sessions and clearer auth state reporting.",
+        "Fixes startup behavior that could replay older clips as new session activity.",
+        "Improves learning rule visibility, title-scoring guidance, and dashboard reporting.",
+        "Improves the watchlist dock, settings flows, and packaged app stability."
+      ]
+    }
+  }
+}

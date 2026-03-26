@@ -1,0 +1,106 @@
+{
+  "name": "cliprr",
+  "version": "1.0.0",
+  "description": "AI-powered Twitch clip automation app",
+  "author": "Jogo",
+  "main": "main/main.js",
+  "private": true,
+  "homepage": "./",
+  "build": {
+    "appId": "com.cliprr.app",
+    "productName": "Cliprr",
+    "asar": true,
+    "files": [
+      "main/**",
+      "frontend/cliprr/build/**",
+      "release-notes.json",
+      "package.json",
+      "!dev-backend.js"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/compiled/main",
+        "to": "backend/main"
+      },
+      {
+        "from": "backend/config/",
+        "to": "backend/config"
+      },
+      {
+        "from": "bin/",
+        "to": "bin"
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "jogozinn",
+        "repo": "cliprr-releases"
+      }
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "nsis": {
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "Cliprr",
+      "runAfterFinish": true
+    },
+    "win": {
+      "icon": "assets/cliprr_icon.ico",
+      "artifactName": "Cliprr ${version}.${ext}",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "icon": "assets/cliprr_icon.icns",
+      "artifactName": "Cliprr ${version}.${ext}",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "compression": "normal"
+  },
+  "scripts": {
+    "dev:backend": "node dev-backend.js",
+    "dev:frontend": "cd frontend/cliprr && npm start",
+    "dev:electron": "wait-on tcp:3001 && electron main/main.js",
+    "everything": "concurrently \"npm run dev:frontend\" \"wait-on tcp:3001 && set CLIPRR_UI_PORT=3001 && electron main/main.js\"",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:frontend": "cd frontend/cliprr && npm run build",
+    "compile-backend": "pyinstaller --noconfirm --clean main.spec --distpath backend/compiled --workpath backend/build",
+    "dist": "npm run compile-backend && npm run build:frontend && electron-builder",
+    "rebuild-native": "electron-rebuild -f -w sqlite3",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "electron": "^25.9.8",
+    "electron-builder": "^26.0.12",
+    "electron-rebuild": "^3.2.9",
+    "wait-on": "^8.0.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "electron-updater": "^6.8.3",
+    "googleapis": "^154.0.0",
+    "node-fetch": "^2.7.0",
+    "electron-store": "^8.1.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.6.3"
+  }
+}
